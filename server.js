@@ -1,4 +1,5 @@
 const express = require('express');
+const userModel = require('./userModel');
 const app = express();
 
 app.listen('2000',function(){
@@ -30,4 +31,22 @@ function createUserAt(req,res,next){
     next();
 }  
 
+function signUpUser(req,res){
 
+    try{
+        let userObj = req.body; 
+        
+        let user = await userModel.create(userObj);
+        console.log(user);
+        res.json({
+            message:"user signed up",
+            user:userObj,
+        })
+    }
+    catch (err){
+            console.log(err);
+            res.json({
+                message:err.message,
+            })
+    }
+}

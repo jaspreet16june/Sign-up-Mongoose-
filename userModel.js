@@ -55,3 +55,5 @@ const userModel = mongoose.model('userModel',userSchema);
     let userObj = await userModel.create(user);
     console.log(userObj);
 })();
+
+module.exports = userModel;
