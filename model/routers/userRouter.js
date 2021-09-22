@@ -6,7 +6,7 @@ app.use('/user',userRouter);
 
 userRouter
         .route('/')
-        .get(getUser)
+        .get(protectRoute,getUser)
         .post(createUser)
         .update(updateUser)
         .delete(deleteUser)
@@ -16,9 +16,26 @@ userRouter
         .get(getUserById);
                    
 async function getUser(req,res){
-            console.log('getUser called');
-            res.json(user);  
+
+        try{
+            console.log("getUser called");
+
+            let user = await userModel.find();
+
+            if(user){
+                return res.json(user);
+            }else{
+                return res.json({
+                    message:"user not found"
+                })
+            }
         }
+        catch(err){
+            return res.json({
+                message: err.message,
+            })
+        } 
+    }
         
         //post request
         // client-> server 
@@ -48,6 +65,17 @@ async function getUser(req,res){
         //param route
         // app.get('/user/:id',getUserById);
         
+        //middelware function
+        // function protectRoute(req,res,next){
+        //     try{
+
+                
+
+        //    }
+        //    catch{
+
+        //    }
+        // }
         function getUserById(req,res){
             console.log(req.params);
             res.json(req.params.id);
