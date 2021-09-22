@@ -1,6 +1,5 @@
 const express = require('express');
 const userModel = require('../userModel');
-const { validate } = require('../userModel');
 
 const authRouter = express.Router();
 
@@ -34,7 +33,7 @@ authRouter
             next();
         }  
         
-        function signUpUser(req,res){
+     async function signUpUser(req,res){
         
             try{
                 let userObj = req.body; 
@@ -63,18 +62,13 @@ authRouter
             console.log('data',data);
             //check if email id is correct- validate
             next();
-            //check if user exists in db
-            // res.json({
-            //     message:"data received",
-            //     data:data.email
-            // })
+         
         };
         
         function validateEmail(req,res){
             console.log('in validateEmail function');
             console.log(req.body);
-            //hw to check if email is correct or not -> @ , .
-            //indexOf
+            
              res.json({
                     message:"data received",
                     data:req.body
@@ -82,7 +76,7 @@ authRouter
         }
 
 
-        function loginUser(req,req){
+     async function loginUser(req,req){
             try{
                 if(req.body.email){
                     let user = await userModel.findOne({email:req.body.email});
