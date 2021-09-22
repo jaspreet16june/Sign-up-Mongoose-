@@ -1,6 +1,6 @@
-const cookieParser = require('cookie-parser');
 const express = require('express');
-
+// const cookieParser = require('cookie-parser');
+// const protectRoute=require('./authHelper')
 const userRouter =express.Router();
 const userModel=require('../userModel');
 

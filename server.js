@@ -1,9 +1,9 @@
 const express = require('express');
 
-const cookieParser = require('cookie-parser');
 const app = express();
+const cookieParser = require('cookie-parser');
 
-app.use(cookieParser);
+app.use(cookieParser());
 
 app.listen('5000',function(){
     console.log('App is listening to the port 2000')

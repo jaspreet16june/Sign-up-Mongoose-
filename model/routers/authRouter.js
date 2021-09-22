@@ -1,20 +1,21 @@
 const express = require('express');
 const userModel = require('../userModel');
-
+const jwt=require('jsonwebtoken');
+const {JWT_KEY}=require('../secret');
 const authRouter = express.Router();
 
 authRouter
-        .route('/signup')
+        .route("/signup")
         .post(createUserAt,signUpUser)
 
 
 authRouter
-        .route('/forgetPassword')
+        .route("/forgetPassword")
         .get(getForgetPassword)
         .post(postForgetPassword,validateEmail)
 
 authRouter
-        .route('/login')
+        .route("/login")
         .post(loginUser)
 
 //  ---------------------------------------------
@@ -22,10 +23,10 @@ authRouter
 // ------------------------------------------------
         function createUserAt(req,res,next){
             let obj = req.body;
-            let length = Object.keys[obj].length;
+            let length = Object.keys(obj).length;
         
             if(length == 0){
-                res.status(400).json({
+                return res.status(400).json({
                     message:"Cannot create user if req.body is empty"
                 })
             }
@@ -82,9 +83,10 @@ authRouter
                     let user = await userModel.findOne({email:req.body.email});
                     if(user){
                         if(req.body.password == user.password){
-                           //1234 -> uid
-                            res.cookie('login','1234',{httpOnly:true})
-
+                            let payload =user['_id']
+                            // const token = jwt.sign(userInfo, secret);
+                            let token = jwt.sign({id:payload},JWT_KEY);
+                            res.cookie("login",token,{httpOnly:true});
                             return res.json({
                                 message:"user is logged-in"
                             })
@@ -107,10 +109,10 @@ authRouter
                     })
                 }
             }
-            catch(err){
-                return res.json({
-                    message:err.message
-                })
+            catch (err) {
+                return res.status(500).json({
+                  message: err.message,
+                });
 
             }
         }

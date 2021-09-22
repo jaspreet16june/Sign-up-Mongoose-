@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const {db_link}= require('../secret.js');
+const {db_link}= require('./secret.js');
 const validator = require('email-validator');
 
-mongoose.connect(db_link).then(function(){
+mongoose.connect(db_link).then(function(db){
     console.log('db connected');
 })
 .catch(function(err){
